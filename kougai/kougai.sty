@@ -1,0 +1,99 @@
+% ================================
+%  LuaLaTeX 用 kougai（警告ゼロ版）
+% ================================
+
+% 日本語
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+% 欧文・数式（fouriernc の代替）
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+\usepackage{amsmath,amssymb}   % 標準的な数式パッケージ
+\usepackage{times}             % Times系フォントの代用
+
+% 図・色・余白
+% \usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{float}
+\usepackage[top=10truemm,bottom=15truemm,left=15truemm,right=15truemm]{geometry}
+
+% 箇条書き・URL・ハイパーリンク
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage[unicode,hidelinks,pdfusetitle]{hyperref}
+\usepackage{here}
+
+% コメント
+\usepackage{comment}
+
+% ===== enumerate の再定義 =====
+\renewenvironment{enumerate}
+{
+\begin{list}{\arabic{enumi}. }
+{
+\usecounter{enumi}
+ \setlength{\itemindent}{0\zw}
+ \setlength{\leftmargin}{3\zw}
+ \setlength{\rightmargin}{0\zw}
+ \setlength{\labelsep}{5.0pt}
+ \setlength{\labelwidth}{3\zw}
+ \setlength{\itemsep}{0em}
+ \setlength{\parsep}{0em}
+ \setlength{\listparindent}{1\zw}
+ \setlength{\parskip}{-1em}
+}
+}{
+\end{list}
+}
+
+% ===== section の余白調整 =====
+\makeatletter
+  \renewcommand{\section}{
+    \@startsection{section}{1}{\z@}
+    {0.5\Cvs}{0.1\Cvs}
+    {\normalfont\large\headfont\raggedright}}
+\makeatother
+
+% ===== タイトルの余白調整 =====
+\makeatletter
+  \def\@maketitle{%
+    \newpage\null
+    \begin{center}%
+      \let\footnote\thanks
+      {\LARGE \@title \par}%
+      \vskip 1.0em
+      {\large
+        \lineskip .5em
+        \begin{tabular}[t]{c}%
+          \@author
+        \end{tabular}\par}%
+      \vskip 1em
+      {\large \@date}%
+    \end{center}%
+    \par\vskip 0.5em
+    \ifvoid\@abstractbox\else\centerline{\box\@abstractbox}\vskip1.5em\fi
+  }
+\makeatother
+
+% ===== 参考文献の調整 =====
+\makeatletter
+  \renewenvironment{thebibliography}[1]{%
+    \section*{\refname}\@mkboth{\refname}{\refname}%
+    \list{\@biblabel{\@arabic\c@enumiv}}%
+          {\settowidth\labelwidth{\@biblabel{#1}}%
+          \leftmargin\labelwidth
+          \advance\leftmargin\labelsep
+          \setlength\baselineskip{11pt}
+          \setlength\itemsep{0.8ex}
+          \usecounter{enumiv}%
+          \let\p@enumiv\@empty
+          \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+    \sloppy
+    \clubpenalty4000
+    \widowpenalty4000%
+  }%
+  {\endlist}
+\makeatother
+
